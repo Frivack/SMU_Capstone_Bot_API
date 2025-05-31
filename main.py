@@ -6,6 +6,11 @@ app = FastAPI()
 BITNET_EXEC = "../BitNet/main"  # BitNet 실행파일 경로
 MODEL_PATH = "../BitNet/models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf"
 
+
+@app.get("/")
+def read_root():
+    return {"message": "Server is running!"}
+
 @app.post("/chat")
 async def chat(request: Request):
     data = await request.json()
