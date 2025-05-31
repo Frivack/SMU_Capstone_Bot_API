@@ -6,7 +6,7 @@ from pathlib import Path
 app = FastAPI()
 
 # 모델 로드 (최초 1회, 메모리에 유지)
-model_path = Path(__file__).resolve().parent.parent / "BitNet" / "models" / "BitNet-b1.58-2B-4T" / "ggml-model-i2_s.gguf"
+model_path = str(Path(__file__).resolve().parent.parent / "BitNet" / "models" / "BitNet-b1.58-2B-4T" / "ggml-model-i2_s.gguf")
 
 llm = Llama(
     model_path=model_path,
