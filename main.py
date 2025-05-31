@@ -1,18 +1,26 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import torch
 from fastapi import FastAPI, Request
+from llama_cpp import Llama
+import os
 
 app = FastAPI()
 
-model_id = "microsoft/BitNet-b1.58-2B-4T"
-tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float32, trust_remote_code=True)
+# 모델 로드 (최초 1회, 메모리에 유지)
+model_path = "models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf"
+llm = Llama(
+    model_path=model_path,
+    n_ctx=2048,
+    n_threads=4,  # CPU 수에 맞게 조정
+    verbose=False
+)
+
 
 @app.post("/chat")
 async def chat(request: Request):
     data = await request.json()
-    input_text = data.get("prompt", "")
-    inputs = tokenizer(input_text, return_tensors="pt")
-    outputs = model.generate(**inputs, max_new_tokens=128)
-    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return {"response": response}
+    prompt = data.get("prompt", "")
+
+    # BitNet은 'system + user + assistant' 형식을 사용하는 chat_template가 있음
+    full_prompt = f"System: You are a helpful assistant\nUser: {prompt}<|eot_id|>\nAssistant:"
+
+    response = llm(full_prompt, max_tokens=128, stop=["<|eot_id|>"])
+    return {"response": response["choices"][0]["text"].strip()}
