@@ -9,7 +9,7 @@ MODEL_PATH = "../BitNet/models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf"
 
 @app.get("/")
 def read_root():
-    return {"message": "Server is running!"}
+    return {"message": "Fast Server is running!"}
 
 @app.post("/chat")
 async def chat(request: Request):
