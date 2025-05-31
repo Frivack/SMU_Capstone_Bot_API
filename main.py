@@ -1,11 +1,13 @@
 from fastapi import FastAPI, Request
 from llama_cpp import Llama
 import os
+from pathlib import Path
 
 app = FastAPI()
 
 # 모델 로드 (최초 1회, 메모리에 유지)
-model_path = "models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf"
+model_path = Path(__file__).resolve().parent.parent / "BitNet" / "models" / "BitNet-b1.58-2B-4T" / "ggml-model-i2_s.gguf"
+
 llm = Llama(
     model_path=model_path,
     n_ctx=2048,
