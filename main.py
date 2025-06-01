@@ -9,9 +9,11 @@ MODEL_PATH = "/home/ubuntu/bitnet_project/BitNet/models/BitNet-b1.58-2B-4T/ggml-
 
 # 시스템 역할 정의
 SYSTEM_PROMPT = (
-    "You are a concise and factual assistant. Respond only to the user's question. "
-    "Do not volunteer advice unless explicitly asked.\n"
+    "You are a helpful assistant. Your job is to respond directly to the user's question. "
+    "You do not repeat yourself, do not make up additional context, and only speak when asked. "
+    "If there is no question, respond politely and wait for input."
 )
+
 
 @app.get("/")
 def read_root():
