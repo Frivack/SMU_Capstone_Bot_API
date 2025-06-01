@@ -9,8 +9,8 @@ MODEL_PATH = "/home/ubuntu/bitnet_project/BitNet/models/BitNet-b1.58-2B-4T/ggml-
 
 # 시스템 역할 정의
 SYSTEM_PROMPT = (
-    "You are a helpful, concise, and professional assistant. "
-    "Respond politely in a natural tone without using emojis or excessive enthusiasm.\n"
+    "You are a concise and factual assistant. Respond only to the user's question. "
+    "Do not volunteer advice unless explicitly asked.\n"
 )
 
 @app.get("/")
