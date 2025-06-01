@@ -3,7 +3,7 @@ import subprocess
 
 app = FastAPI()
 
-BITNET_EXEC = "/home/ubuntu/bitnet_project/BitNet/main"  # BitNet 실행파일 경로
+BITNET_EXEC = "/home/ubuntu/bitnet_project/BitNet/build/bin/llama-cli"  # BitNet 실행파일 경로
 MODEL_PATH = "/home/ubuntu/bitnet_project/BitNet/models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf"
 
 
