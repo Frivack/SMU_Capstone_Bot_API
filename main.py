@@ -23,7 +23,8 @@ async def chat(request: Request):
     user_prompt = data.get("prompt", "")
 
     # 시스템 프롬프트 삽입
-    full_prompt = SYSTEM_PROMPT + user_prompt
+    full_prompt = f"{SYSTEM_PROMPT}User: {user_prompt}\nAssistant:"
+
 
     # 최대 토큰 제한
     cmd = [BITNET_EXEC, "-m", MODEL_PATH, "-p", full_prompt, "-n", "128"]
