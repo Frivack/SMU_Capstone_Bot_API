@@ -32,20 +32,24 @@ async def chat(request: Request):
     cmd = [BITNET_EXEC, "-m", MODEL_PATH, "-p", full_prompt, "-n", "128"]
 
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            encoding='utf-8',
+            errors='ignore',
+            timeout=60
+        )
         response_text = result.stdout.strip()
-
-        # The End 제거
         response_text = response_text.split("The End")[0].strip()
-
-        # 마지막 Assistant 응답만 추출
         response_text = extract_last_response(response_text)
 
     except subprocess.TimeoutExpired:
         return {"error": "Inference timed out"}
     except Exception as e:
-        return {"error": f"{e}: {result.stderr if 'result' in locals() else ''}"}
-
+        return {
+            "error": str(e),
+            "stderr": result.stderr if 'result' in locals() else "no result"
+        }
     return {"response": response_text}
 
 
