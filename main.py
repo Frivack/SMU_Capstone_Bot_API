@@ -29,7 +29,7 @@ async def chat(request: Request):
 
 
     # 최대 토큰 제한
-    cmd = [BITNET_EXEC, "-m", MODEL_PATH, "-p", full_prompt, "-n", "128"]
+    cmd = [BITNET_EXEC, "-m", MODEL_PATH, "-p", full_prompt, "-n", "64"]
 
     try:
         result = subprocess.run(
@@ -39,9 +39,7 @@ async def chat(request: Request):
             errors='ignore',
             timeout=60
         )
-        response_text = result.stdout.strip()
-        response_text = response_text.split("The End")[0].strip()
-        response_text = extract_last_response(response_text)
+        response_text = clean_response(result.stdout)
 
     except subprocess.TimeoutExpired:
         return {"error": "Inference timed out"}
@@ -59,3 +57,21 @@ def extract_last_response(output: str) -> str:
     if matches:
         return matches[-1].strip()
     return output.strip()
+
+def clean_response(text: str) -> str:
+    # 마지막 Assistant 응답 추출
+    matches = re.findall(r"Assistant:\s*(.*?)(?=\nUser:|\Z)", text, re.DOTALL)
+    response = matches[-1].strip() if matches else text.strip()
+
+    # [end of text] 제거
+    response = response.replace("[end of text]", "").strip()
+
+    # 이모지 제거 (간단 정규식)
+    response = re.sub(r'[^\w\s.,?!\'\"()\-:+]', '', response)
+
+    # 중복 라인 제거
+    lines = response.splitlines()
+    seen = set()
+    response = "\n".join(line for line in lines if not (line in seen or seen.add(line)))
+
+    return response.strip()
