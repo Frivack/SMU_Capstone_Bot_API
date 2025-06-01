@@ -9,15 +9,13 @@ MODEL_PATH = "/home/ubuntu/bitnet_project/BitNet/models/BitNet-b1.58-2B-4T/ggml-
 
 # 시스템 역할 정의
 SYSTEM_PROMPT = (
-    "You are a helpful and concise assistant. "
-    "Always respond in clear and natural language. "
-    "Avoid unnecessary elaboration, excessive enthusiasm, or self-referencing phrases. "
-    "Do not repeat yourself, and do not ask the user questions unless it's part of a clarification. "
-    "Focus on delivering accurate, direct answers to the user's input."
+    "You are a concise and knowledgeable assistant. "
+    "Only respond with the answer to the user's input. "
+    "Do not add emotional greetings, do not ask questions back, and do not translate or rephrase the user's input. "
+    "Never say things like 'How can I help you?', 'Let me explain', or 'Is there something specific...'. "
+    "Avoid emojis, filler phrases, or any form of repetition.\n"
+    "Answer in natural, simple Korean unless English is required.\n"
 )
-
-
-
 
 @app.get("/")
 def read_root():
@@ -29,8 +27,15 @@ async def chat(request: Request):
     user_prompt = data.get("prompt", "")
 
     # 시스템 프롬프트 삽입
-    full_prompt = f"{SYSTEM_PROMPT}User: {user_prompt}\nAssistant:"
-
+    full_prompt = (
+            SYSTEM_PROMPT +
+            "User: 게임용 PC를 맞추고 싶은데, CPU는 어떤 게 좋아?\n"
+            "Assistant: 게임용이라면 Intel i5-13600K나 AMD Ryzen 5 7600X 같은 중급 게이밍 CPU가 좋습니다.\n"
+            "User: 3080에 어울리는 파워는?\n"
+            "Assistant: RTX 3080은 최소 750W 이상의 정격 파워가 필요합니다. 브랜드는 시소닉이나 커세어가 안정적입니다.\n"
+            "User: "
+            f"{user_prompt}\nAssistant:"
+    )
 
     # 최대 토큰 제한
     cmd = [BITNET_EXEC, "-m", MODEL_PATH, "-p", full_prompt, "-n", "64"]
