@@ -9,11 +9,13 @@ MODEL_PATH = "/home/ubuntu/bitnet_project/BitNet/models/BitNet-b1.58-2B-4T/ggml-
 
 # 시스템 역할 정의
 SYSTEM_PROMPT = (
-    "You are an assistant that gives clear, concise answers in natural language. "
-    "Do not repeat yourself, do not ask the user questions in return, "
-    "and do not say things like 'How can I help you?'. "
-    "Only answer the user's question as directly and factually as possible.\n"
+    "You are a helpful and concise assistant. "
+    "Always respond in clear and natural language. "
+    "Avoid unnecessary elaboration, excessive enthusiasm, or self-referencing phrases. "
+    "Do not repeat yourself, and do not ask the user questions unless it's part of a clarification. "
+    "Focus on delivering accurate, direct answers to the user's input."
 )
+
 
 
 
