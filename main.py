@@ -38,7 +38,7 @@ async def chat(request: Request):
     )
 
     # 최대 토큰 제한
-    cmd = [BITNET_EXEC, "-m", MODEL_PATH, "-p", full_prompt, "-n", "64"]
+    cmd = [BITNET_EXEC, "-m", MODEL_PATH, "-p", full_prompt, "-n", "80"]
 
     try:
         result = subprocess.run(
