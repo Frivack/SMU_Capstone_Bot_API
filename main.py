@@ -9,10 +9,10 @@ MODEL_PATH = "/home/ubuntu/bitnet_project/BitNet/models/BitNet-b1.58-2B-4T/ggml-
 
 # 시스템 역할 정의
 SYSTEM_PROMPT = (
-    "You are a helpful assistant. Your job is to respond directly to the user's question. "
-    "You do not repeat yourself, do not make up additional context, and only speak when asked. "
-    "If there is no question, respond politely and wait for input."
+    "You are an assistant that gives clear, concise answers in natural language. "
+    "Avoid repetition and only respond to the user's question.\n"
 )
+
 
 
 @app.get("/")
@@ -65,6 +65,10 @@ def clean_response(text: str) -> str:
 
     # [end of text] 제거
     response = response.replace("[end of text]", "").strip()
+
+    # 이상한 문장 제거: 특수문자 혼합 단어
+    response = re.sub(r'\b\w{15,}\b', '', response)
+
 
     # 이모지 제거 (간단 정규식)
     response = re.sub(r'[^\w\s.,?!\'\"()\-:+]', '', response)
