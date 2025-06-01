@@ -60,13 +60,6 @@ async def chat(request: Request):
     return {"response": response_text}
 
 
-def extract_last_response(output: str) -> str:
-    # Assistant 응답 블록 모두 찾기
-    matches = re.findall(r"Assistant:\s*(.*?)(?=\nUser:|\Z)", output, re.DOTALL)
-    if matches:
-        return matches[-1].strip()
-    return output.strip()
-
 def clean_response(text: str) -> str:
     # 마지막 Assistant 응답 추출
     matches = re.findall(r"Assistant:\s*(.*?)(?=\nUser:|\Z)", text, re.DOTALL)
