@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BitNet Chat</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; background: #f4f4f4; }
+        #chat-box { background: white; padding: 1rem; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, button { padding: 0.5rem; margin-top: 1rem; width: 100%; }
+        .response { margin-top: 1rem; background: #eef; padding: 1rem; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <div id="chat-box">
+        <h2>BitNet Chatbot</h2>
+        <input type="text" id="prompt" placeholder="Ask something..." />
+        <button onclick="sendPrompt()">Send</button>
+        <div id="response" class="response"></div>
+    </div>
+
+    <script>
+        async function sendPrompt() {
+            const prompt = document.getElementById('prompt').value;
+            const responseDiv = document.getElementById('response');
+            responseDiv.textContent = "Thinking...";
+
+            try {
+                const res = await fetch('/botapi/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
+
+                const data = await res.json();
+                if (data.response) {
+                    responseDiv.textContent = data.response;
+                } else {
+                    responseDiv.textContent = "Error: " + (data.error || "Unknown error");
+                }
+            } catch (err) {
+                responseDiv.textContent = "Failed to connect: " + err;
+            }
+        }
+    </script>
+</body>
+</html>
