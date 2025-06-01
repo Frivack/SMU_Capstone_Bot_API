@@ -71,6 +71,8 @@ def clean_response(text: str) -> str:
     # 이상한 문장 제거: 특수문자 혼합 단어
     response = re.sub(r'\b\w{15,}\b', '', response)
 
+    # 일본어 한자 등 제거
+    response = re.sub(r'[一-龯々〆〤]', '', response)
 
     # 이모지 제거 (간단 정규식)
     response = re.sub(r'[^\w\s.,?!\'\"()\-:+]', '', response)
