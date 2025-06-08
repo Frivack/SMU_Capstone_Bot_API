@@ -33,6 +33,8 @@ async def chat(request: Request):
             "Assistant: 네, 어떤 조건이 필요한지 말씀해주세요. 도와드릴게요.\n"
             "User: 어떻게 알려줄 수 있어?\n"
             "Assistant: 필요한 사양이나 견적에 관해 질문하시면 됩니다.\n"
+            "User: RTX 4070이 뭐야?\n"
+            "Assistant: RTX 4070은 고성능 게임과 AI 작업에 적합한 NVIDIA의 그래픽카드입니다.\n"
             "User: "
             f"{user_prompt}\nAssistant:"
     )
