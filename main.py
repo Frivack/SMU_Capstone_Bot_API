@@ -59,6 +59,7 @@ async def chat(request: Request):
             "error": str(e),
             "stderr": result.stderr if 'result' in locals() else "no result"
         }
+    response_text = "RTX 4070은 고성능 게임과 AI 작업에 적합한 NVIDIA의 그래픽카드입니다."
     return {"response": response_text}
 
 
